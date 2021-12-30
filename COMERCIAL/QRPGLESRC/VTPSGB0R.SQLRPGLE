@@ -3,7 +3,7 @@
      ** Programa      : VTPSGB0R                                          *                         
      ** Descripciòn:  : Poster Dinero a Cartera Guías en Linea            *                         
      ** Proyecto      : Nuevo Plan de Guías                               *                         
-     ** Autor         : (Jortega)                                         *                         
+     ** Autor         : (JOrtega)                                         *                         
      ** Fecha Creaciòn: 09 de Marzo de 2016                               *                         
      **                                                                   *                         
      **********************************************************************                         
