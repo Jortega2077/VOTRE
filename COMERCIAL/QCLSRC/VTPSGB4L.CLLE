@@ -1,0 +1,28 @@
+/***************************************************************************/   
+/*  Programa      : VTPSGB3L                                               */   
+/*  Descripcion   : CL Consulta de Nivel de Alas                           */   
+/*  Proyecto      : Plan de Guias                                          */   
+/*  Autor         : Leonel Mauricio Parra Suárez - PersonalSoft            */   
+/*  Fecha Creación: 14 Julio de 2016                                       */   
+/***************************************************************************/   
+                                                                                
+             DCL        VAR(&OPCAPF) TYPE(*CHAR) LEN(10)                        
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&OPCAPF) VALUE(OPCAPF)                              
+                                                                                
+             ADDLIBLE   LIB(VOTREP00)                                           
+             MONMSG     MSGID(CPF0000)                                          
+                                                                                
+             OVRDBF     FILE(VTMPDWF) TOFILE(&LIBVOTA/VTMPDWF)                  
+             OVRDBF     FILE(LCACMP01) TOFILE(&OPCAPF/LCACMP01)                 
+                                                                                
+ /* Ejecuta programa consulta de Nivel de Alas             */                   
+             CALL       PGM(&LIBVOTP/VTPSGBWR)                                  
+                                                                                
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+  FIN:       ENDPGM                                                             

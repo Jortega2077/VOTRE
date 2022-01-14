@@ -1,0 +1,25 @@
+ /*****************************************************************************/
+ /*    Programa      : VTPSGC8L                                               */
+ /*    Descripcion   : CL Consulta Control de Pagos Guías V2                  */
+ /*    Proyecto      : Plan de Guías                                          */
+ /*    Autor         : (APARRAQ)                                              */
+ /*    Fecha Creación: Marzo de 2020                                          */
+ /*****************************************************************************/
+             PGM                                                                
+                                                                                
+             DCL        VAR(&LIBFILE) TYPE(*CHAR) LEN(10) VALUE('VOTREA00')     
+             DCL        VAR(&LIBPGM) TYPE(*CHAR) LEN(10) VALUE('VOTREP00')      
+                                                                                
+             OVRDSPF    FILE(VTCCCP0P) TOFILE(&LIBPGM/VTCCCP0P)                 
+             OVRDSPF    FILE(VTOPII1P) TOFILE(VPOPIP00/VTOPII1P)                
+             OVRDBF     FILE(LCACMP01) TOFILE(OPCAPF/LCACMP01)                  
+             OVRDBF     FILE(VTWLPGF) TOFILE(&LIBFILE/VTWLPGF)                  
+                                                                                
+ /* Genera Informe de Control de Pagos Guías V2  */                             
+             CALL       PGM(&LIBPGM/VTPSGCAR)                                   
+                                                                                
+/* Elimina los OVRD Activos */                                                  
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+ /* Fin Programa */                                                             
+             ENDPGM                                                             

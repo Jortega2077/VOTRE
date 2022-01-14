@@ -1,0 +1,51 @@
+/*********************************************************************/         
+/*  PGM Cálculo Valor a pagar a Guía por Campaña                     */         
+/*  Proyecto:        Plan Guías                                      */         
+/*  AUTOR:           Leonel Mauricio Parra Suarez-PersonalSoft       */         
+/*  FECHA:           14 de Junio de 2016                             */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&CIA &CÑA &ZON)                                    
+                                                                                
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBOPCA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBOPF) TYPE(*CHAR) LEN(10)                        
+             DCL        VAR(&LIBVTCIA) TYPE(*CHAR) LEN(10)                      
+             DCL        VAR(&CIA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&CÑA) TYPE(*CHAR) LEN(4)                            
+             DCL        VAR(&ZON) TYPE(*CHAR) LEN(3)                            
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&LIBOPCA) VALUE(OPCAPF)                             
+             CHGVAR     VAR(&LIBOPF) VALUE('OPF' *CAT &CIA)                     
+             CHGVAR     VAR(&LIBVTCIA) VALUE('VOTREA' *CAT &CIA)                
+                                                                                
+             ADDLIBLE   LIB(&LIBVOTP)                                           
+             MONMSG     MSGID(CPF2103 CPF2106 CPF2110 CPF2113 +                 
+                          CPF2118 CPF2149 CPF2176 CPF2182)                      
+             ADDLIBLE   LIB(&LIBOPF)                                            
+             MONMSG     MSGID(CPF2103 CPF2106 CPF2110 CPF2113 +                 
+                          CPF2118 CPF2149 CPF2176 CPF2182)                      
+                                                                                
+             OVRDBF     FILE(VTMSPGF) TOFILE(&LIBVOTA/VTMSPGF)                  
+             OVRDBF     FILE(VTOSPGF) TOFILE(&LIBVOTA/VTOSPGF)                  
+             OVRDBF     FILE(VTTPPRF) TOFILE(&LIBVOTA/VTTPPRF)                  
+             OVRDBF     FILE(VTTCPGF) TOFILE(&LIBVOTA/VTTCPGF)                  
+             OVRDBF     FILE(VTWLPGF) TOFILE(&LIBVOTA/VTWLPGF)                  
+             OVRDBF     FILE(VTWCPGF) TOFILE(&LIBVOTA/VTWCPGF)                  
+             OVRDBF     FILE(VTWVRFF) TOFILE(&LIBVOTA/VTWVRFF)                  
+             OVRDBF     FILE(VTWVRTF) TOFILE(&LIBVOTA/VTWVRTF)                  
+             OVRDBF     FILE(VTWCPHF) TOFILE(&LIBVOTA/VTWCPHF)                  
+             OVRDBF     FILE(PRUEBALE) TOFILE(GNPNALSOF4/PRUEBALE)              
+             OVRDBF     FILE(PARDTLHIS) TOFILE(&LIBVTCIA/PARDTLHIS)             
+             OVRDBF     FILE(VTTSPGF) TOFILE(&LIBVOTA/VTTSPGF)                  
+             CALL       PGM(&LIBVOTP/VTPSGBJRp)  PARM(&CIA &CÑA &ZON)           
+                                                                                
+/**********************************************************************/        
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+                                                                                
+                                                                                
+  FIN:       ENDPGM                                                             

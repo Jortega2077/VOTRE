@@ -1,0 +1,68 @@
+/*********************************************************************/         
+/*  Proceso de Generación de datos para Liquidación manual           */         
+/*  Proyecto:        Plan Guías                                      */         
+/*  AUTOR:           John William Palacio   PersonalSoft             */         
+/*  FECHA:           07 de Abril de 2016                             */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&PCIA &PZON &PCAM &PSEC)                           
+                                                                                
+             DCL        VAR(&OPCAPF) TYPE(*CHAR) LEN(10)                        
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBCUS) TYPE(*CHAR) LEN(10)                        
+             DCL        VAR(&LIBOPF) TYPE(*CHAR) LEN(10)                        
+             DCL        VAR(&PCIA) TYPE(*CHAR) LEN(3)                           
+             DCL        VAR(&PZON) TYPE(*CHAR) LEN(3)                           
+             DCL        VAR(&PCAM) TYPE(*CHAR) LEN(4)                           
+             DCL        VAR(&PSEC) TYPE(*CHAR) LEN(1)                           
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&OPCAPF) VALUE(OPCAPF)                              
+             CHGVAR     VAR(&LIBCUS) VALUE('OPCUS' *CAT &PCIA)                  
+             CHGVAR     VAR(&LIBOPF) VALUE('OPF' *CAT &PCIA)                    
+                                                                                
+             IF         COND(&PZON = '992' *OR &PZON = '993' *OR +              
+                          &PZON = '994' *OR &PZON = '995' *OR &PZON +           
+                          = '996' *OR &PZON = 'WEB') THEN(DO)                   
+                  GOTO       FIN                                                
+             ENDDO                                                              
+             IF         COND(&PCIA = '001' *AND &PZON = '700') THEN(DO)         
+                  GOTO       FIN                                                
+             ENDDO                                                              
+                                                                                
+             OVRDBF     FILE(VTHLMGF) TOFILE(&LIBVOTA/VTHLMGF)                  
+             OVRDBF     FILE(VTGLMGF) TOFILE(&LIBVOTA/VTGLMGF)                  
+             OVRDBF     FILE(VTHLCGF) TOFILE(&LIBVOTA/VTHLCGF)                  
+             OVRDBF     FILE(VTGLCGF) TOFILE(&LIBVOTA/VTGLCGF)                  
+             OVRDBF     FILE(LMLLST01) TOFILE(&LIBOPF/LMLLST01)                 
+             OVRDBF     FILE(LARDTL01) TOFILE(&LIBOPF/LARDTL01)                 
+             OVRDBF     FILE(VTWCCPF) TOFILE(&LIBVOTA/VTWCCPF)                  
+             OVRDBF     FILE(VTMOTOF) TOFILE(&LIBCUS/VTMOTOF)                   
+                                                                                
+             IF         COND(&PCIA = '001' *AND &PZON = '998') THEN(DO)         
+                 OVRDBF     FILE(PORHDR) TOFILE(OPF002/PORHDR)                  
+                 OVRDBF     FILE(PARDTL) TOFILE(OPF002/PARDTL)                  
+                 OVRDBF     FILE(LORDTL01) TOFILE(OPF002/LORDTL01)              
+             ENDDO                                                              
+             ELSE       CMD(DO)                                                 
+                 OVRDBF     FILE(PORHDR) TOFILE(&LIBOPF/PORHDR)                 
+                 OVRDBF     FILE(PARDTL) TOFILE(&LIBOPF/PARDTL)                 
+                 OVRDBF     FILE(LORDTL01) TOFILE(&LIBOPF/LORDTL01)             
+             ENDDO                                                              
+                                                                                
+ /* Generacion de datos para informe liquidación manual */                      
+             CALL       PGM(&LIBVOTP/VTPSGB4RS) PARM(&PCIA &PZON +              
+                          &PCAM &PSEC)                                          
+                                                                                
+ /* Generacion de datos para informe liquidacion manual Condiciones Guias */    
+             CALL       PGM(&LIBVOTP/VTPSGB6RS) PARM(&PCIA &PZON +              
+                          &PCAM &PSEC)                                          
+                                                                                
+/*******************************************************************/           
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+                                                                                
+                                                                                
+  FIN:       ENDPGM                                                             

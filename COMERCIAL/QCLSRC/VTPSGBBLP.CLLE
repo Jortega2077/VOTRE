@@ -1,0 +1,28 @@
+/*********************************************************************/         
+/*  Proceso Inscripciones o Re-Incorporaciones Estrella              */         
+/*  Proyecto:        Plan Guías                                      */         
+/*  AUTOR:           Leonel Mauricio Parra Suárez-PersonalSoft       */         
+/*  FECHA:           25 de Mayo de 2016                              */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&CIA &CMP &ZON)                                    
+                                                                                
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&CIA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&ZON) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&CMP) TYPE(*CHAR) LEN(4)                            
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+                                                                                
+             ADDLIBLE   LIB(VOTREP00)                                           
+             MONMSG     MSGID(CPF0000)                                          
+                                                                                
+             OVRDBF     FILE(VTWIEGF) TOFILE(&LIBVOTA/VTWIEGF)                  
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGBBRp) PARM(&CIA &CMP &ZON)            
+                                                                                
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+             ENDPGM                                                             

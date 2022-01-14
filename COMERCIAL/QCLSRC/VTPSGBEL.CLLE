@@ -1,0 +1,37 @@
+/*********************************************************************/         
+/*  Pgm que Valida Nro de Inscripciones por Campaña                  */         
+/*  Proyecto:        Plan Guías                                      */         
+/*  AUTOR:           Edgar  Ivan Maldonado Perez - PersonalSoft      */         
+/*  FECHA:           31 de Mayo de 2016                              */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&CIA &CMP &ZON)                                    
+                                                                                
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBOPCA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&CIA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&ZON) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&CMP) TYPE(*CHAR) LEN(4)                            
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&LIBOPCA) VALUE(OPCAPF)                             
+                                                                                
+             ADDLIBLE   LIB(&LIBVOTP)                                           
+             MONMSG     MSGID(CPF2103)                                          
+                                                                                
+             OVRDBF     FILE(LCacmp01) TOFILE(&LIBOPCA/LCacmp01)                
+             OVRDBF     FILE(Vtwidff) TOFILE(&LIBVOTA/Vtwidff)                  
+             OVRDBF     FILE(Vttdngf) TOFILE(&LIBVOTA/Vttdngf)                  
+             OVRDBF     FILE(VTWPCGF) TOFILE(&LIBVOTA/VTWPCGF)                  
+             OVRDBF     FILE(VTGLMGF) TOFILE(&LIBVOTA/VTGLMGF)                  
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGBER) PARM(&CIA &CMP &ZON)             
+                                                                                
+/*******************************************************************/           
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+                                                                                
+                                                                                
+  FIN:       ENDPGM                                                             

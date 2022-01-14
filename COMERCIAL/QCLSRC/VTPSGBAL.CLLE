@@ -1,0 +1,31 @@
+/*********************************************************************/         
+/*  Proceso Crea Detalle de los Pedidos Estrella                     */         
+/*  Proyecto:        Plan Guías                                      */         
+/*  AUTOR:           Edgar Ivan Maldonado   PersonalSoft             */         
+/*  FECHA:           20 de Mayo de 2016                              */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&CIA &CMP &ZON)                                    
+                                                                                
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&CIA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&ZON) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&CMP) TYPE(*CHAR) LEN(4)                            
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+                                                                                
+                                                                                
+             ADDLIBLE   LIB(VOTREP00)                                           
+             MONMSG     MSGID(CPF0000)                                          
+                                                                                
+             OVRDBF     FILE(VTWDDEF) TOFILE(&LIBVOTA/VTWDDEF)                  
+             OVRDBF     FILE(VTWEDEF) TOFILE(&LIBVOTA/VTWEDEF)                  
+             OVRDBF     FILE(VTGLMGF) TOFILE(&LIBVOTA/VTGLMGF)                  
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGBAR) PARM(&CIA &CMP &ZON)             
+                                                                                
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+             ENDPGM                                                             

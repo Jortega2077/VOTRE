@@ -1,0 +1,37 @@
+/*********************************************************************/         
+/*  Nombre de PGM VTPSGC0L                                           */         
+/*  Descripcion: PGM Consulta Control de Pagos Guías                 */         
+/*  Proyecto:        Plan de Guías                                   */         
+/*  AUTOR:           Leonel Mauricio Parra Suárez-PersonalSoft       */         
+/*  FECHA:           04 de Abril de 2017                             */         
+/*********************************************************************/         
+                                                                                
+             PGM                                                                
+                                                                                
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBOPCA) TYPE(*CHAR) LEN(10)                       
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&LIBOPCA) VALUE(OPCAPF)                             
+                                                                                
+             ADDLIBLE   LIB(&LIBVOTP)                                           
+             MONMSG     MSGID(CPF2103)                                          
+             ADDLIBLE   LIB(&LIBVOTA)                                           
+             MONMSG     MSGID(CPF2103)                                          
+                                                                                
+             OVRDBF     FILE(VTPSGC0P) TOFILE(&LIBVOTP/VTPSGC0P)                
+             OVRDBF     FILE(VTPSGC0I) TOFILE(&LIBVOTP/VTPSGC0I)                
+             OVRDBF     FILE(VTWCPGF) TOFILE(&LIBVOTA/VTWCPGF)                  
+             OVRDBF     FILE(VTWVRFF) TOFILE(&LIBVOTA/VTWVRFF)                  
+             OVRDSPF    FILE(VTPSGC0P) TOFILE(&LIBVOTP/VTPSGC0P)                
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGC0R)                                  
+                                                                                
+/*******************************************************************/           
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+                                                                                
+                                                                                
+  FIN:       ENDPGM                                                             

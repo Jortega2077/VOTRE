@@ -1,0 +1,37 @@
+/*********************************************************************/         
+/*  PGM Valida Politicas Comerciales por Guía y determinar si se Paga*/         
+/*  Proyecto:        Plan Guías                                      */         
+/*  AUTOR:           Leonel Mauricio Parra Suarez-PersonalSoft       */         
+/*  FECHA:           14 de Junio de 2016                             */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&CIA &CÑA &ZON &CDL &SCT)                          
+                                                                                
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBOPCA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&CIA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&CÑA) TYPE(*CHAR) LEN(4)                            
+             DCL        VAR(&ZON) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&CDL) TYPE(*DEC) LEN(9 0)                           
+             DCL        VAR(&SCT) TYPE(*CHAR) LEN(3)                            
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&LIBOPCA) VALUE(OPCAPF)                             
+                                                                                
+             ADDLIBLE   LIB(&LIBVOTP)                                           
+             MONMSG     MSGID(CPF2103 CPF2106 CPF2110 CPF2113 +                 
+                          CPF2118 CPF2149 CPF2176 CPF2182)                      
+                                                                                
+             OVRDBF     FILE(VTTDNGF) TOFILE(&LIBVOTA/VTTDNGF)                  
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGBMR) PARM(&CIA &CÑA &ZON +            
+                          &CDL &SCT)                                            
+                                                                                
+/**********************************************************************/        
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+                                                                                
+                                                                                
+  FIN:       ENDPGM                                                             

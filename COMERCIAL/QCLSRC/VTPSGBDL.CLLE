@@ -1,0 +1,32 @@
+/*********************************************************************/         
+/*  Proceso Crea Clasificación Niveles Alas Guías Subir              */         
+/*  Proyecto:        Plan Guías                                      */         
+/*  AUTOR:           Leonel Mauricio Parra Suárez-PersonalSoft       */         
+/*  FECHA:           23 de Mayo de 2016                              */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&CIA &CMP &ZON)                                    
+                                                                                
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&CIA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&ZON) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&CMP) TYPE(*CHAR) LEN(4)                            
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+                                                                                
+                                                                                
+             ADDLIBLE   LIB(VOTREP00)                                           
+             MONMSG     MSGID(CPF0000)                                          
+                                                                                
+             OVRDBF     FILE(VTMGLDF) TOFILE(&LIBVOTA/VTMGLDF)                  
+             OVRDBF     FILE(VTWEDEF) TOFILE(&LIBVOTA/VTWEDEF)                  
+             OVRDBF     FILE(VTMTAGF) TOFILE(&LIBVOTA/VTMTAGF)                  
+             OVRDBF     FILE(VTMCNAF) TOFILE(&LIBVOTA/VTMCNAF)                  
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGBDR) PARM(&CIA &CMP &ZON)             
+                                                                                
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+             ENDPGM                                                             

@@ -1,0 +1,33 @@
+/*********************************************************************/         
+/*  Nombre de PGM VTPSGC9L                                           */         
+/*  Descripcion: PGM Verifica Diferencias en el Vtmspgf              */         
+/*  Proyecto:        Plan de Guías                                   */         
+/*  AUTOR:           (JOrtega)                                       */         
+/*  FECHA:           24 de Febrero de 2021                           */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&PCIA &PCMP)                                       
+                                                                                
+             DCL        VAR(&PCIA) TYPE(*CHAR) LEN(3)                           
+             DCL        VAR(&PCMP) TYPE(*CHAR) LEN(4)                           
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBOPF) TYPE(*CHAR) LEN(10)                        
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&LIBOPF) VALUE('OPF' *CAT &PCIA)                    
+                                                                                
+             ADDLIBLE   LIB(&LIBVOTP)                                           
+             MONMSG     MSGID(CPF2103)                                          
+                                                                                
+             OVRDBF     FILE(VTWLPGF) TOFILE(&LIBVOTA/VTWLPGF)                  
+             OVRDBF     FILE(VTMSPGF) TOFILE(&LIBVOTA/VTMSPGF)                  
+             OVRDBF     FILE(PSLMAN) TOFILE(&LIBOPF/PSLMAN)                     
+             OVRDBF     FILE(LMLLST01) TOFILE(&LIBOPF/LMLLST01)                 
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGCBR) PARM(&PCIA &PCMP)                
+                                                                                
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+             ENDPGM                                                             

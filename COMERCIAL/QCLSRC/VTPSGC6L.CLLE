@@ -1,0 +1,59 @@
+/*********************************************************************/         
+/*  PGM         :  VTPSGC6L                                          */         
+/*  DESCRIPCIÓN :  Mtto Stencil Fuera de Sector                      */         
+/*  AUTOR       :  Leonel Mauricio Parra Suárez -  PersonalSoft      */         
+/*  RESPONSABLE :  JORTEGA                      -  Leonisa S.A.S     */         
+/*  FECHA       :  04 de Septiembre de 2018                          */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&CIA &EVE)                                         
+                                                                                
+             DCL        VAR(&OPCAPF) TYPE(*CHAR) LEN(10)                        
+             DCL        VAR(&CIA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&EVE) TYPE(*CHAR) LEN(1)                            
+             DCL        VAR(&ERR) TYPE(*CHAR) LEN(2)                            
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBOPFC) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTC) TYPE(*CHAR) LEN(10)                       
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&OPCAPF) VALUE(OPCAPF)                              
+                                                                                
+             ADDLIBLE   LIB(&LIBVOTP)                                           
+             MONMSG     MSGID(CPF2103)                                          
+             CHGVAR     VAR(&LIBOPFC) VALUE('OPF' *CAT &CIA)                    
+             CHGVAR     VAR(&LIBVOTC) VALUE('VOTREA' *CAT &CIA)                 
+                                                                                
+             OVRDBF     FILE(VTPSGC3P) TOFILE(&LIBVOTP/VTPSGC3P)                
+             OVRDBF     FILE(LMLLST01) TOFILE(&LIBOPFC/LMLLST01)                
+             OVRDBF     FILE(VTMPSLF) TOFILE(&LIBVOTA/VTMPSLF)                  
+             OVRDBF     FILE(VTMGLDF) TOFILE(&LIBVOTA/VTMGLDF)                  
+             OVRDBF     FILE(VTMTICF) TOFILE(&LIBVOTA/VTMTICF)                  
+             OVRDBF     FILE(Vtmpsll0) TOFILE(&LIBVOTA/Vtmpsll0)                
+             OVRDBF     FILE(Vtmpsll1) TOFILE(&LIBVOTA/Vtmpsll1)                
+             OVRDBF     FILE(Vtmpsll2) TOFILE(&LIBVOTA/Vtmpsll2)                
+             OVRDBF     FILE(Vtmpsll3) TOFILE(&LIBVOTA/Vtmpsll3)                
+             OVRDBF     FILE(Vtmpsll4) TOFILE(&LIBVOTA/Vtmpsll4)                
+             OVRDBF     FILE(Vtmpsll5) TOFILE(&LIBVOTA/Vtmpsll5)                
+             OVRDBF     FILE(LCACMP01) TOFILE(&OPCAPF/LCACMP01)                 
+             IF         COND(&EVE *EQ '1') THEN(GOTO CMDLBL(UNO))               
+             IF         COND(&EVE *EQ '3') THEN(GOTO CMDLBL(TRE))               
+             IF         COND(&EVE *EQ ' ') THEN(GOTO CMDLBL(FIN))               
+             IF         COND(&EVE *EQ ' ') THEN(DO)                             
+             ENDDO                                                              
+ UNO:                                                                           
+             CALL       PGM(&LIBVOTP/VTPSGC9R) PARM(&CIA)                       
+             DLTOVR     FILE(*ALL)                                              
+             GOTO CMDLBL(FIN)                                                   
+ TRE:                                                                           
+             CALL       PGM(&LIBVOTP/VTPSGC12R) PARM(&CIA)                      
+                                                                                
+/*******************************************************************/           
+             DLTOVR     FILE(*ALL)                                              
+             GOTO CMDLBL(FIN)                                                   
+                                                                                
+                                                                                
+                                                                                
+  FIN:       ENDPGM                                                             

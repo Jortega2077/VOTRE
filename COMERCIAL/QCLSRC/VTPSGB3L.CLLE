@@ -1,0 +1,31 @@
+/***************************************************************************/   
+/*  Programa      : VTPSGB3L                                               */   
+/*  Descripcion   : CL para generacion de informe de Metas y Resultados de */   
+/*                  Guias por Campaña                                      */   
+/*  Proyecto      : Plan de Guias                                          */   
+/*  Autor         : (APARRAQ)                                              */   
+/*  Fecha Creación: Julio de 2016                                          */   
+/***************************************************************************/   
+             PGM        PARM(&PTIPO)                                            
+                                                                                
+             DCL        VAR(&OPCAPF) TYPE(*CHAR) LEN(10)                        
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&PTIPO) TYPE(*CHAR) LEN(1)                          
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&OPCAPF) VALUE(OPCAPF)                              
+                                                                                
+             ADDLIBLE   LIB(VOTREP00)                                           
+             MONMSG     MSGID(CPF0000)                                          
+                                                                                
+             OVRDBF     FILE(VTMPDWF) TOFILE(&LIBVOTA/VTMPDWF)                  
+             OVRDBF     FILE(LCACMP01) TOFILE(&OPCAPF/LCACMP01)                 
+                                                                                
+ /* Ejecuta programa de Seleccion de Campaña (Metas y Resultados) */            
+             CALL       PGM(&LIBVOTP/VTPSGBKR) PARM(&PTIPO)                     
+                                                                                
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+  FIN:       ENDPGM                                                             

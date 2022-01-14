@@ -1,0 +1,54 @@
+/********************************************************************+          
+                                                                     +          
+  Programa         : VTPSGB0L                                        +          
+  Descripciòn      : Poster Dinero a Cartera Nuevo Plan de Guías     +          
+  Proyecto         : Nuevo Plan de Guías                             +          
+  Autor            : (Jortega)                                       +          
+  Fecha de Creaciòn: Marzo 09 de 2016                                +          
+                                                                     +          
+ *********************************************************************/         
+             PGM        PARM(&CIA)                                              
+             DCL        VAR(&I1) TYPE(*CHAR) LEN(1) VALUE('N')                  
+             DCL        VAR(&I2) TYPE(*CHAR) LEN(1) VALUE('N')                  
+             DCL        VAR(&I3) TYPE(*CHAR) LEN(1) VALUE('N')                  
+             DCL        VAR(&I4) TYPE(*CHAR) LEN(1) VALUE('N')                  
+             DCL        VAR(&CIA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&LIBOPF) TYPE(*CHAR) LEN(10)                        
+             DCL        VAR(&LIBVOT) TYPE(*CHAR) LEN(10)                        
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10) +                     
+                          VALUE('VOTREA00')                                     
+             DCL        VAR(&LIBPGM) TYPE(*CHAR) LEN(10) +                      
+                          VALUE('VOTREP00')                                     
+                                                                                
+ /* Arma Librerias de Trabajo */                                                
+             CHGVAR     VAR(&LIBOPF) VALUE('OPF' *CAT &CIA)                     
+             CHGVAR     VAR(&LIBVOT) VALUE('VOTREA' *CAT &CIA)                  
+                                                                                
+       /*    GOTO       CMDLBL(FIN)  */                                         
+ /* Adiciona Librerias de Programas */                                          
+             ADDLIBLE   LIB(&LIBPGM)                                            
+             MONMSG     MSGID(CPF2103) EXEC(CHGVAR VAR(&I1) VALUE('S'))         
+             ADDLIBLE   LIB(&LIBVOTA)                                           
+             MONMSG     MSGID(CPF2103) EXEC(CHGVAR VAR(&I2) VALUE('S'))         
+             ADDLIBLE   LIB(&LIBOPF)                                            
+             MONMSG     MSGID(CPF2103) EXEC(CHGVAR VAR(&I3) VALUE('S'))         
+             ADDLIBLE   LIB(&LIBVOT)                                            
+             MONMSG     MSGID(CPF2103) EXEC(CHGVAR VAR(&I4) VALUE('S'))         
+                                                                                
+ /* Ciclo de Evolución de Pedidos del Contacto */                               
+             OVRDSPF    FILE(VTGSLILP) TOFILE(VOTREP00/VTGSLILP)                
+             OVRDSPF    FILE(VTGSLIJP) TOFILE(VOTREP00/VTGSLIJP)                
+             OVRDBF     FILE(VTWLPGF) TOFILE(&LIBVOTA/VTWLPGF)                  
+             OVRDBF     FILE(VTWVRFF) TOFILE(&LIBVOTA/VTWVRFF)                  
+             OVRDBF     FILE(PARDTL) TOFILE(&LIBOPF/PARDTL)                     
+             CALL       PGM(VTPSGB0R) PARM(&CIA)                                
+                                                                                
+ /* Remoción de Librerias */                                                    
+                                                                                
+             IF         COND(&I1 = 'N') THEN(RMVLIBLE LIB(&LIBPGM))             
+             IF         COND(&I2 = 'N') THEN(RMVLIBLE LIB(&LIBVOTA))            
+             IF         COND(&I3 = 'N') THEN(RMVLIBLE LIB(&LIBOPF))             
+             IF         COND(&I4 = 'N') THEN(RMVLIBLE LIB(&LIBVOT))             
+                                                                                
+ /* FIN PROGRAMA */                                                             
+ fin:        ENDPGM                                                             

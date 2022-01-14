@@ -1,0 +1,29 @@
+/*********************************************************************/         
+/*  Proceso Liquida Bono a las Guías para Foco Conseguir             */         
+/*  Proyecto:        Plan Guías                                      */         
+/*  AUTOR:           Edgar Ivan Maldonado   PersonalSoft             */         
+/*  FECHA:           15 de Junio de 2016                             */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&CIA &CMP &ZON)                                    
+                                                                                
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&CIA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&ZON) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&CMP) TYPE(*CHAR) LEN(4)                            
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+                                                                                
+                                                                                
+             ADDLIBLE   LIB(VOTREP00)                                           
+             MONMSG     MSGID(CPF0000)                                          
+                                                                                
+             OVRDBF     FILE(Vttpgbf) TOFILE(&LIBVOTA/Vttpgbf)                  
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGBHR) PARM(&CIA &CMP &ZON)             
+                                                                                
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+             ENDPGM                                                             

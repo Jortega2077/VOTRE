@@ -1,0 +1,39 @@
+/*********************************************************************/         
+/*  Nombre de PGM VTPSGC0L                                           */         
+/*  Descripcion: PGM Consulta Control de Retención Guías             */         
+/*  Proyecto   : Retefuente                                          */         
+/*  AUTOR      : Leonel Mauricio Parra Suárez-PersonalSoft           */         
+/*  Responsable: Julian Ortega                                       */         
+/*  FECHA      : 30 de Noviembre de 2017                             */         
+/*********************************************************************/         
+                                                                                
+             PGM                                                                
+                                                                                
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBOPCA) TYPE(*CHAR) LEN(10)                       
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&LIBOPCA) VALUE(OPCAPF)                             
+                                                                                
+             ADDLIBLE   LIB(&LIBVOTP)                                           
+             MONMSG     MSGID(CPF2103)                                          
+             ADDLIBLE   LIB(&LIBVOTA)                                           
+             MONMSG     MSGID(CPF2103)                                          
+                                                                                
+             OVRDBF     FILE(VTPSGC1P) TOFILE(&LIBVOTP/VTPSGC1P)                
+             OVRDBF     FILE(VTPSGC1I) TOFILE(&LIBVOTP/VTPSGC1I)                
+             OVRDBF     FILE(VTWCPGF) TOFILE(&LIBVOTA/VTWCPGF)                  
+             OVRDBF     FILE(VTWVRFF) TOFILE(&LIBVOTA/VTWVRFF)                  
+             OVRDBF     FILE(VTWVRTF) TOFILE(&LIBVOTA/VTWVRTF)                  
+             OVRDSPF    FILE(VTPSGC1P) TOFILE(&LIBVOTP/VTPSGC1P)                
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGC3R)                                  
+                                                                                
+/*******************************************************************/           
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+                                                                                
+                                                                                
+  FIN:       ENDPGM                                                             

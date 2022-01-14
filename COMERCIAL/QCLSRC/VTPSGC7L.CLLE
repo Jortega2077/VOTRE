@@ -1,0 +1,32 @@
+/*********************************************************************/         
+/*  PGM         :  VTPSGC7L                                          */         
+/*  DESCRIPCIÓN :  Mtto Tipos de contacto                            */         
+/*  AUTOR       :  Leonel Mauricio Parra Suárez -  PersonalSoft      */         
+/*  RESPONSABLE :  JORTEGA                      -  Leonisa S.A.S     */         
+/*  FECHA       :  23 de Agosto de 2018                              */         
+/*********************************************************************/         
+                                                                                
+             PGM                                                                
+                                                                                
+             DCL        VAR(&OPCAPF) TYPE(*CHAR) LEN(10)                        
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10) +                     
+                          VALUE('VOTREA00')                                     
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+                                                                                
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&OPCAPF) VALUE(OPCAPF)                              
+                                                                                
+             ADDLIBLE   LIB(&LIBVOTP)                                           
+             MONMSG     MSGID(CPF2103)                                          
+                                                                                
+             OVRDBF     FILE(VTPSGC4P) TOFILE(&LIBVOTP/VTPSGC4P)                
+             OVRDBF     FILE(VTMTICF) TOFILE(&LIBVOTA/VTMTICF)                  
+             OVRDBF     FILE(LCACMP01) TOFILE(&OPCAPF/LCACMP01)                 
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGC10R)                                 
+                                                                                
+/*******************************************************************/           
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+                                                                                
+  FIN:       ENDPGM                                                             

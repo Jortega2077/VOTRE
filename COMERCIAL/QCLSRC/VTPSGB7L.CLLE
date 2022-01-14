@@ -1,0 +1,33 @@
+/*********************************************************************/         
+/*  Proceso Informe de liquidacion Descuentos Nuevo Plan Zonas       */         
+/*  Condiciones Guias                                                */         
+/*  Proyecto:        Plan Guías                                      */         
+/*  AUTOR:           Edgar Ivan Maldonado   PersonalSoft             */         
+/*  FECHA:           10 de Mayo de 2016                              */         
+/*********************************************************************/         
+                                                                                
+             PGM                                                                
+                                                                                
+             DCL        VAR(&OPCAPF) TYPE(*CHAR) LEN(10)                        
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&OPCAPF) VALUE(OPCAPF)                              
+                                                                                
+             ADDLIBLE   LIB(VOTREP00)                                           
+             MONMSG     MSGID(CPF0000)                                          
+                                                                                
+             OVRDBF     FILE(VTPSGB0P) TOFILE(&LIBVOTP/VTPSGB0P)                
+             OVRDBF     FILE(VTGLMGF) TOFILE(&LIBVOTA/VTGLMGF)                  
+             OVRDBF     FILE(LCACMP01) TOFILE(&OPCAPF/LCACMP01)                 
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGB7R)                                  
+                                                                                
+/*******************************************************************/           
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+                                                                                
+                                                                                
+  FIN:       ENDPGM                                                             

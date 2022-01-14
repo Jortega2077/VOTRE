@@ -1,0 +1,32 @@
+/*********************************************************************/         
+/*  Pago Metas Cumplidas o Metas No Cumplidas Guías por Campaña      */         
+/*  Proyecto:        Plan Guías                                      */         
+/*  AUTOR:           Leonel Mauricio Parra Suarez-PersonalSoft       */         
+/*  FECHA:           07 de Junio de 2016                             */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&CIA &CÑA &ZON)                                    
+                                                                                
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBOPCA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&CIA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&CÑA) TYPE(*DEC) LEN(4)                             
+             DCL        VAR(&ZON) TYPE(*CHAR) LEN(3)                            
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&LIBOPCA) VALUE(OPCAPF)                             
+                                                                                
+             ADDLIBLE   LIB(&LIBVOTP)                                           
+             MONMSG     MSGID(CPF2103)                                          
+             ADDLIBLE   LIB(&LIBVOTA)                                           
+             MONMSG     MSGID(CPF2103)                                          
+                                                                                
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGBFR)  PARM(&CIA &CÑA &ZON)            
+                                                                                
+/**********************************************************************/        
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+  FIN:       ENDPGM                                                             

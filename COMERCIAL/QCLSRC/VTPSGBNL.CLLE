@@ -1,0 +1,33 @@
+/*********************************************************************/         
+/*  Proceso Crea valida las politicas                                */         
+/*  Proyecto:        Plan Guías                                      */         
+/*  AUTOR:           John William Palacio   PersonalSoft             */         
+/*  FECHA:           05 de Julio de 2016                             */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&CIA &CMPACT &CMPANT &ZNA &CED &SEC)               
+                                                                                
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&CIA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&CMPACT) TYPE(*CHAR) LEN(4)                         
+             DCL        VAR(&CMPANT) TYPE(*CHAR) LEN(4)                         
+             DCL        VAR(&ZNA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&CED) TYPE(*CHAR) LEN(9)                            
+             DCL        VAR(&SEC) TYPE(*CHAR) LEN(3)                            
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+                                                                                
+             ADDLIBLE   LIB(VOTREP00)                                           
+             MONMSG     MSGID(CPF0000)                                          
+                                                                                
+             OVRDBF     FILE(VTWPCGF) TOFILE(&LIBVOTA/VTWPCGF)                  
+             OVRDBF     FILE(VTTDNGF) TOFILE(&LIBVOTA/VTTDNGF)                  
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGBNR) PARM(&CIA &CMPACT +              
+                          &CMPANT &ZNA &CED &SEC)                               
+                                                                                
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+             ENDPGM                                                             

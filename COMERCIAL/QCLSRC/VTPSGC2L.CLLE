@@ -1,0 +1,46 @@
+/*********************************************************************/         
+/*  VTPSGC2L                                                         */         
+/*  Descripcion:     Genera archivo de Control de Pagos Tradicional  */         
+/*  Proyecto:        Plan Lideres Tradicional                        */         
+/*  AUTOR:           AParraQ                                         */         
+/*  FECHA:           Enero de 2018                                   */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&CIA &ZONA &CAMPA)                                 
+                                                                                
+             DCL        VAR(&CIA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&ZONA) TYPE(*CHAR) LEN(3)                           
+             DCL        VAR(&CAMPA) TYPE(*CHAR) LEN(4)                          
+             DCL        VAR(&CASO) TYPE(*CHAR) LEN(7) VALUE(' ')                
+             DCL        VAR(&CEDULA) TYPE(*CHAR) LEN(30) VALUE(' ')             
+             DCL        VAR(&FECHA) TYPE(*CHAR) LEN(10) VALUE(' ')              
+             DCL        VAR(&RESP) TYPE(*CHAR) LEN(1) VALUE(' ')                
+             DCL        VAR(&LIBOPF) TYPE(*CHAR) LEN(10)                        
+             DCL        VAR(&LIBFILE) TYPE(*CHAR) LEN(10) VALUE(VOTREA00)       
+             DCL        VAR(&LIBPGM) TYPE(*CHAR) LEN(10) VALUE(VOTREP00)        
+                                                                                
+             CHGVAR     VAR(&LIBOPF) VALUE('OPF' *CAT &CIA)                     
+                                                                                
+             CALL       PGM(&LIBPGM/VTMPGB0R) PARM(&CIA &ZONA &CASO +           
+                          &CEDULA &FECHA &RESP)                                 
+             IF         COND(&RESP = 'S') THEN(DO)                              
+             /*   GOTO       CMDLBL(FIN)  */                                    
+             ENDDO                                                              
+                                                                                
+             OVRDBF     FILE(VTHCGTF) TOFILE(&LIBFILE/VTHCGTF)                  
+             OVRDBF     FILE(VTMPARF) TOFILE(&LIBFILE/VTMPARF)                  
+             OVRDBF     FILE(VTMSMPF) TOFILE(&LIBFILE/VTMSMPF)                  
+             OVRDBF     FILE(VTMRTGF) TOFILE(&LIBFILE/VTMRTGF)                  
+             OVRDBF     FILE(LSLMAN01) TOFILE(&LIBOPF/LSLMAN01)                 
+             OVRDBF     FILE(LMLLST01) TOFILE(&LIBOPF/LMLLST01)                 
+                                                                                
+             CALL       PGM(&LIBPGM/VTPSGC5R) PARM(&CIA &ZONA &CAMPA)           
+                                                                                
+             ADDLIBLE   LIB(VOTREP00)                                           
+             MONMSG     MSGID(CPF2103)                                          
+             ADDLIBLE   LIB(VOTREA00)                                           
+             MONMSG     MSGID(CPF2103)                                          
+                                                                                
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+  FIN:       ENDPGM                                                             

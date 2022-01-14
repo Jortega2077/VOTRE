@@ -1,0 +1,39 @@
+/*********************************************************************/         
+/*  Proceso de Generación de datos para Liquidación manual           */         
+/*  Condiciones Guias                                                */         
+/*  Proyecto:        Plan Guías                                      */         
+/*  AUTOR:           John William Palacio   PersonalSoft             */         
+/*  FECHA:           19 de Abril de 2016                             */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&PCIA &PCED &PZON &PSEC)                           
+                                                                                
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBOPF) TYPE(*CHAR) LEN(10)                        
+                                                                                
+             DCL        VAR(&PCIA) TYPE(*CHAR) LEN(3)                           
+             DCL        VAR(&PCED) TYPE(*CHAR) LEN(9)                           
+             DCL        VAR(&PZON) TYPE(*CHAR) LEN(3)                           
+             DCL        VAR(&PSEC) TYPE(*CHAR) LEN(3)                           
+                                                                                
+             CHGVAR     VAR(&LIBVOTA) VALUE(VOTREA00)                           
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&LIBOPF) VALUE('OPF' *CAT &PCIA)                    
+                                                                                
+             OVRDBF     FILE(PSLMAN) TOFILE(&LIBOPF/PSLMAN)                     
+             OVRDBF     FILE(LORHDR02) TOFILE(&LIBOPF/LORHDR02)                 
+             OVRDBF     FILE(VTWPIGF) TOFILE(&LIBVOTA/VTWPIGF)                  
+             OVRDBF     FILE(VTMNPIF) TOFILE(&LIBVOTA/VTMNPIF)                  
+                                                                                
+             ADDLIBLE   LIB(&LIBVOTP)                                           
+             MONMSG     MSGID(CPF2103)                                          
+                                                                                
+             CALL       PGM(&LIBVOTP/VTPSGB8R) PARM(&PCIA &PCED &PZON &PSEC)    
+                                                                                
+/*******************************************************************/           
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+                                                                                
+                                                                                
+  FIN:       ENDPGM                                                             

@@ -1,0 +1,30 @@
+/*********************************************************************/         
+/*  Reprocesa Zona ya Envio el Ppto Comercial                        */         
+/*  Proyecto:        Plan Guías                                      */         
+/*  AUTOR:           (JOrtega)                                       */         
+/*  FECHA:           04 de Octubre de 2017                           */         
+/*********************************************************************/         
+                                                                                
+             PGM        PARM(&CIA &CMP &ZON &INP &ACC)                          
+                                                                                
+             DCL        VAR(&LIBVOTA) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&LIBVOTP) TYPE(*CHAR) LEN(10)                       
+             DCL        VAR(&CIA) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&ZON) TYPE(*CHAR) LEN(3)                            
+             DCL        VAR(&CMP) TYPE(*CHAR) LEN(4)                            
+             DCL        VAR(&INP) TYPE(*CHAR) LEN(1)                            
+             DCL        VAR(&ACC) TYPE(*CHAR) LEN(1)                            
+                                                                                
+             CHGVAR     VAR(&LIBVOTP) VALUE(VOTREP00)                           
+             CHGVAR     VAR(&INP) VALUE(' ')                                    
+             CHGVAR     VAR(&ACC) VALUE('R')                                    
+                                                                                
+             ADDLIBLE   LIB(VOTREP00)                                           
+             MONMSG     MSGID(CPF0000)                                          
+                                                                                
+             OVRDBF     FILE(VTWRNPF) TOFILE(VOTREA00/VTWRNPF)                  
+             CALL       PGM(&LIBVOTP/VTPSGBSR) PARM(&CIA &CMP &ZON &INP &ACC)   
+                                                                                
+             DLTOVR     FILE(*ALL)                                              
+                                                                                
+             ENDPGM                                                             
