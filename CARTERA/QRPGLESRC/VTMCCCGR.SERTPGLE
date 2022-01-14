@@ -1,0 +1,148 @@
+      **********************************************************************                        
+      *                                                                   **                        
+      * Programa      : VTMCCCGR                                          **                        
+      * Descripcion   : Consulta de Pagos Por Rango de Fechas             **                        
+      * Proyecto      : Menu Opciones O.P.I Paises                        **                        
+      * Autor         : Dbetancourt                                       **                        
+      * Fecha creacion: Marzo  30 del 2.009                              **                         
+      *                                                                   *                         
+      *********************************************************************                         
+     ** Definiciòn de Archivo de Pantallas                                                          
+                                                                                                    
+      *Definicion de Variables de trabajo                                                           
+                                                                                                    
+     D SqlNr1          S           1000A   INZ(*BLANKS)                                             
+     D SqlNr2          S           1000A   INZ(*BLANKS)                                             
+     D Wind            S              1A   INZ('L')                                                 
+      *********************************************************************                         
+                                                                                                    
+     C     *ENTRY        PLIST                                                                      
+     C                   PARM                    CIAO              3                                
+     C                   PARM                    pfec1             6                                
+     C                   PARM                    pfec2             6                                
+                                                                                                    
+      /FREE                                                                                         
+                                                                                                    
+          if pfec1<>' ' and pfec2  <> ' ';                                                          
+        //if fecinicial <>' ' and fecfinal <>' ';                                                   
+                                                                                                    
+         SqlNr2 = 'Create Table Votrea'+ ciao + '/vtwi3bft (' +                                     
+         'ZONA CHAR(10), CIUDAD CHAR(20), ESTADO CHAR(2), +                                         
+          SECUEN NUMERIC(11), ORDEN NUMERIC(9), USUARIO CHAR(10), +                                 
+          VALOR NUMERIC(11, 2), CEDULA NUMERIC(9), FECHA CHAR(6), +                                 
+          TENDER CHAR(3), COMENT CHAR(20),                        +                                 
+          REFORDEN NUMERIC(9),  TIPMONEDA CHAR(10), IDBANCO CHAR(10), +                             
+          CEDLAR CHAR(30))';                                                                        
+                                                                                                    
+           Exec Sql                                                                                 
+            Prepare Cur1 From :SqlNr2;                                                              
+                                                                                                    
+           Exec Sql                                                                                 
+             Execute Cur1;                                                                          
+                                                                                                    
+          Exec SQl delete from vtwi3bft;                                                            
+                                                                                                    
+         SqlNr2 = 'Create Table Votrea'+ ciao + '/vtwi3bf (' +                                      
+         'ZONA CHAR(10), CIUDAD CHAR(20), ESTADO CHAR(2), +                                         
+          SECUEN NUMERIC(11), ORDEN NUMERIC(9), USUARIO CHAR(10), +                                 
+          VALOR NUMERIC(11, 2), CEDULA NUMERIC(9), FECHA CHAR(6), +                                 
+          TENDER CHAR(3), COMENT CHAR(20),                        +                                 
+          REFORDEN NUMERIC(9),  TIPMONEDA CHAR(10), IDBANCO CHAR(10), +                             
+          CEDLAR CHAR(30))';                                                                        
+                                                                                                    
+           Exec Sql                                                                                 
+            Prepare Cur1 From :SqlNr2;                                                              
+                                                                                                    
+           Exec Sql                                                                                 
+             Execute Cur1;                                                                          
+                                                                                                    
+          Exec SQl delete from vtwi3bf;                                                             
+                                                                                                    
+         SqlNr1 = 'Create Table Votrea'+ ciao + '/vtwi3bfW (' +                                     
+         'ZONA CHAR(10), CIUDAD CHAR(20), ESTADO CHAR(2), +                                         
+          SECUEN NUMERIC(11), ORDEN NUMERIC(9), USUARIO CHAR(10), +                                 
+          VALOR NUMERIC(11, 2), CEDULA NUMERIC(9), FECHA CHAR(6), +                                 
+          TENDER CHAR(3), COMENT CHAR(20),                        +                                 
+          REFORDEN NUMERIC(9),  TIPMONEDA CHAR(10), IDBANCO CHAR(10), +                             
+          CEDLAR CHAR(30))';                                                                        
+                                                                                                    
+           Exec Sql                                                                                 
+            Prepare Cur2 From :SqlNr1;                                                              
+                                                                                                    
+           Exec Sql                                                                                 
+             Execute Cur2;                                                                          
+                                                                                                    
+          Exec SQl delete from vtwi3bfW;                                                            
+                                                                                                    
+         SqlNr1 = 'Create Table Votrea'+ ciao + '/vtwi3bfA (' +                                     
+         'ZONA CHAR(10), CIUDAD CHAR(20), ESTADO CHAR(2), +                                         
+          SECUEN NUMERIC(11), ORDEN NUMERIC(9), USUARIO CHAR(10), +                                 
+          VALOR NUMERIC(11, 2), CEDULA NUMERIC(9), FECHA CHAR(6), +                                 
+          TENDER CHAR(3), COMENT CHAR(20),                        +                                 
+          REFORDEN NUMERIC(9),  TIPMONEDA CHAR(10), IDBANCO CHAR(10), +                             
+          CEDLAR CHAR(30))';                                                                        
+                                                                                                    
+           Exec Sql                                                                                 
+            Prepare Cur2 From :SqlNr1;                                                              
+                                                                                                    
+           Exec Sql                                                                                 
+             Execute Cur2;                                                                          
+                                                                                                    
+          Exec SQl delete from vtwi3bfA;                                                            
+                                                                                                    
+         Exec Sql                                                                                   
+          INSERT INTO  VTWI3BFT                                                                     
+          (ZONA, CIUDAD, ESTADO, SECUEN, ORDEN, USUARIO,                                            
+          VALOR, CEDULA, FECHA, TENDER, COMENT, REFORDEN, TIPMONEDA, IDBANCO,                       
+          CEDLAR)                                                                                   
+          SELECT MLLSL1, MLCITY, MLSTAT, ADSEQÑ, ADORDÑ, ADUSER, ADTRAM,                            
+          MLCSTÑ, DIGITS(ADTRYY)||DIGITS(ADTRMM)||DIGITS(ADTRDD),                                   
+          ADTEND, ADTNDÑ, OHRORD, OHINF3, ADBTCH,                                                   
+          Case When MlcstÑ = 201499990 Then                                                         
+          Votrep00.Fncsced(:Wind, :CiaO, Trim(Char(AdordÑ)))                                        
+          Else                                                                                      
+          Votrep00.Fncsced(:Wind, :CiaO, Trim(Char(MlcstÑ)))                                        
+          End                                                                                       
+          FROM opcapf/pmllst200                                                                     
+          INNER JOIN PARDTL                                                                         
+               ON  ADCSTÑ = MLCSTÑ                                                                  
+          LEFT OUTER JOIN  PORHDR                                                                   
+               ON  ADCSTÑ = OHCSTÑ                                                                  
+                   AND ADORDÑ = OHORDÑ                                                              
+          WHERE ADTRTY='P' AND                                                                      
+         char(DIGITS(ADTRYY)||DIGITS(ADTRMM)||DIGITS(ADTRDD)) between                               
+         :pfec1  and :pfec2;                                                                        
+                                                                                                    
+        //FROM LMLLST01                                                                             
+        //:pfec1 >= char(DIGITS(ADTRYY)||DIGITS(ADTRMM)||DIGITS(ADTRDD))                            
+        //AND                                                                                       
+        //:pfec2 <= char(DIGITS(ADTRYY)||DIGITS(ADTRMM)||DIGITS(ADTRDD));                           
+                                                                                                    
+           //Inserta los pagos del canal DLM                                                        
+         Exec Sql                                                                                   
+          INSERT INTO  VTWI3BF                                                                      
+          SELECT * FROM  VTWI3BFT                                                                   
+          WHERE ZONA  NOT IN ('WEB', 'AMA', 'LIN', 'DAF',                                           
+                             'DLM', 'COR', 'RCD', 'RIP',  'MLI' );                                  
+                                                                                                    
+           //Inserta los pagos  canal WEB                                                           
+         Exec Sql                                                                                   
+          INSERT INTO  VTWI3BFW                                                                     
+          SELECT * FROM  VTWI3BFT                                                                   
+          WHERE ZONA IN ('WEB');                                                                    
+                                                                                                    
+           //Inserta los pagos de los canales <> a DLM y WEB                                        
+         Exec Sql                                                                                   
+          INSERT INTO  VTWI3BFA                                                                     
+          SELECT * FROM  VTWI3BFT                                                                   
+          WHERE ZONA IN  ('AMA', 'LIN', 'DAF',                                                      
+                          'DLM', 'COR', 'RCD', 'RIP',  'MLI' );                                     
+                                                                                                    
+                                                                                                    
+      //mensaje = 'Fin Proceso Suba Excel Archiv(Vtwi3bf Vtwi3bfW Vtwi3bfA)';                       
+      //mensaje1 = 'que esta en la Libreria (Votrea' + Ciao + '), Pulse Intro.';                    
+      //   Exfmt Rdato2;                                                                            
+       endif;                                                                                       
+       //enddo;                                                                                     
+       *inlr=*on;                                                                                   
+      /end-free                                                                                     
